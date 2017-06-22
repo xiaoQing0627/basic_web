@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>图片压缩</title>
+    <script src="jquery.min.js"></script>
+    <script src="LocalResizeIMG.js"></script>
+</head>
+<body>
+<input id="file" type="file" accept="image/*" />
+<script type="text/javascript">
+    $('input:file').localResizeIMG({
+        width: 200,//图片大小
+        quality: 0.5,//图片清晰度
+        success: function (result) {
+            var img = new Image();
+            img.src = result.base64;
+            $('body').append(img);
+            console.log(result);
+        }
+    });
+</script>
+</body>
+</html>

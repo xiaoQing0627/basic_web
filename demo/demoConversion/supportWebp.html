@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>判断浏览器支持，并格式转换</title>
+    <script src="jquery.min.js"></script>
+</head>
+<body>
+    <canvas style="display: none" id="canvas"></canvas>
+    <p>判断是否支持webp，支持显示webp格式，不支持显示jpg/png格式</p>
+    <img id="isJpg" src="QQ图片20170619104223.jpg" alt=""/>
+    <img id="isWebp" src="1.webp" alt=""/>
+    <p>jpg格式转化为png格式显示</p>
+    <img id="jpgToPng" src="" alt=""/>
+    <p>jpg格式转化为webp格式显示</p>
+    <img id="jpgToWebp" src="" alt=""/>
+    <p>webp格式转化为png格式显示</p>
+    <img id="webpToJpg" src="" alt=""/>
+<script>
+   $(function(){
+       var isJpg = document.getElementById('isJpg');
+       var isWebp = document.getElementById('isWebp');
+
+       if(supportWebP()==true){
+           isJpg.style.display="none";
+       }else{
+           isWebp.style.display="none";
+       }
+
+       $('#jpgToPng').attr("src",convertCanvasToImage(convertImageToCanvas(isJpg),'image/png'));
+       $('#jpgToWebp').attr("src",convertCanvasToImage(convertImageToCanvas(isJpg),'image/webp'));
+       $('#webpToJpg').attr("src",convertCanvasToImage(convertImageToCanvas(isWebp),'image/jpeg'));
+
+       //判断浏览器是否支持webp格式的图片
+       function supportWebP(){
+           var isSupport = !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0;
+           return isSupport;
+       }
+        //图片转化成canvas
+       function convertImageToCanvas(image) {
+           var canvas = document.getElementById("canvas");
+           canvas.width = image.width;
+           canvas.height = image.height;
+           canvas.getContext("2d").drawImage(image, 0, 0);
+           return canvas;
+       }
+       // Converts canvas to an image
+       function convertCanvasToImage(canvas,type) {
+           var image = new Image();
+           image.src = canvas.toDataURL(type, 1.0);
+           return image.src;//这里可以return图片，也可以return图片的src是base64格式的。
+       }
+   });
+</script>
+</body>
+</html>
